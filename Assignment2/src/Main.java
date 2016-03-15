@@ -41,7 +41,7 @@ public class Main {
 
 			switch (choice) {
 			case 1:
-				String[] info = getCustomerInfo();
+				String[] info = PhoneBook.getCustomerInfo();
 				if (book.insert(info[0], info[1], info[2])) {
 
 				} else {
@@ -49,7 +49,7 @@ public class Main {
 				}
 				break;
 			case 2:
-				info = getCustomerInfo();
+				info = PhoneBook.getCustomerInfo();
 				if (!book.delete(info[0], info[1], info[2])) {
 					System.out.println("Failed to remove anything");
 				}
@@ -59,108 +59,17 @@ public class Main {
 				break;
 
 			case 4:
-				String[] search = getSearchQuery();
+				String[] search = PhoneBook.getSearchQuery();
 				book.search(search[0], search[1]);
 				break;
 
 			}
 
 		} while (choice != 5);
+		book.quit();
 
 	}
 
-	/**
-	 * 
-	 * @return gets three strings which reperesent one entry for the phone book
-	 */
-	private static String[] getCustomerInfo() {
-
-		while (true) {
-			String[] result = new String[3];
-			System.out.println("Enter first name");
-			result[1] = scan.next();
-
-			if (!checkAlphabetitcal(result[1])) {
-				System.out.println("Bad first name, try again");
-				continue;
-			}
-			System.out.println("Enter last name");
-			result[0] = scan.next();
-
-			if (!checkAlphabetitcal(result[0])) {
-				System.out.println("Bad last name, try again");
-				continue;
-			}
-
-			System.out.println("Enter phone number");
-			result[2] = scan.next();
-
-			if (!checkNumeric(result[2])) {
-				System.out.println("Bad phone number, try again");
-				continue;
-			}
-
-			return result;
-
-		}
-
-	}
-
-	/**
-	 * 
-	 * @param str
-	 * @return Returns true if the string parameter is composed only of
-	 *         alphabetical characters, or else false
-	 */
-	private static boolean checkAlphabetitcal(String str) {
-		for (int i = 0; i < str.length(); i++) {
-			if (!Character.isAlphabetic(str.charAt(i))) {
-				return false;
-			}
-
-		}
-		return true;
-	}
-
-	/**
-	 * 
-	 * @param str
-	 * @return Returns true if the string parameter is composed only of numbers,
-	 *         or else false
-	 */
-	private static boolean checkNumeric(String str) {
-		for (int i = 0; i < str.length(); i++) {
-			if (!Character.isDigit(str.charAt(i))) {
-				return false;
-			}
-
-		}
-		return true;
-	}
-
-	private static String[] getSearchQuery() {
-		String[] result = new String[3];
-
-		while (true) {
-			System.out.println("Enter first name, or * to search by all first names");
-			result[1] = scan.next();
-			scan.nextLine();
-
-			if (!checkAlphabetitcal(result[1]) && !result[1].equals("*")) {
-				System.out.println("Bad first name, try again");
-				continue;
-			}
-			System.out.println("Enter last name, or * to search all last names");
-			result[0] = scan.next();
-			scan.nextLine();
-			if (!checkAlphabetitcal(result[0]) && !result[0].equals("*")) {
-				System.out.println("Bad last name, try again");
-				continue;
-			}
-
-			break;
-		}
-		return result;
-	}
+	
 
 }

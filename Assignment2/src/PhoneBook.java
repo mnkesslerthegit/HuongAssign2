@@ -1,15 +1,22 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PhoneBook {
 
+	private static Scanner scan = new Scanner(System.in);
 	private ListDT<Entry> myList;
+	private String fileName;
 
-	public PhoneBook(String fileName) {
+	public PhoneBook(String file) {
 		myList = new ListDT<Entry>();
-
+		fileName = file;
 		String line = null;
 		try {
 			// FileReader reads text files in the default encoding.
@@ -18,8 +25,22 @@ public class PhoneBook {
 			// Always wrap FileReader in BufferedReader.
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 
+			/**
+			 * Read in strings from text file.
+			 */
 			while ((line = bufferedReader.readLine()) != null) {
-				System.out.println(line);
+				String[] lineData = line.split(" ");
+
+				if (lineData.length == 3) {
+					if (checkAlphabetitcal(lineData[0]) && checkAlphabetitcal(lineData[1])
+							&& checkNumeric(lineData[2])) {
+						Entry nextEntry = new Entry(lineData[0], lineData[1], (lineData[2]));
+						myList.add(nextEntry);
+
+					}
+
+				}
+
 			}
 
 			// Always close files.
@@ -34,8 +55,36 @@ public class PhoneBook {
 
 	}
 
+	// save to original file
+	public void quit() {
+System.out.print("quitting");
+		
+		try {
+			// FileReader reads text files in the default encoding.
+			FileWriter fileWriter = new FileWriter(fileName);
+
+			// Always wrap FileReader in BufferedReader.
+			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+			/**
+			 * Write to textFile
+			 */
+			bufferedWriter.write(this.toString());
+			
+			// Always close files.
+			bufferedWriter.close();
+		} catch (FileNotFoundException ex) {
+			System.out.println("Unable to open file '" + fileName + "'");
+		} catch (IOException ex) {
+			System.out.println("Error reading file '" + fileName + "'");
+			// Or we could just do this:
+			// ex.printStackTrace();
+		}
+
+	}
+
 	public String toString() {
-		String result = "Phone book: \n ";
+		String result = "";
 
 		myList.reset();
 		int size = myList.size();
@@ -53,7 +102,7 @@ public class PhoneBook {
 		String phoneNumber;
 
 		public String toString() {
-			return "Entry: " + lastName + " " + firstName + " " + phoneNumber + "\n";
+			return lastName + " " + firstName + " " + phoneNumber + "\n";
 		}
 
 		public Entry(String A, String B, String C) {
@@ -66,16 +115,16 @@ public class PhoneBook {
 		public int compareTo(Entry o) {
 			// first check last name
 			if (lastName.compareTo(o.lastName) > 0) {
-				System.out.println(lastName + " comes after " + o.lastName);
+				//System.out.println(lastName + " comes after " + o.lastName);
 				return 1;
 
 			} else if (lastName.compareTo(o.lastName) == 0) {
 				// if last names are the same, check the first name
-				System.out.println("last names are same");
+			//	System.out.println("last names are same");
 				return firstName.compareTo(o.firstName);
 
 			} else {
-				System.out.println(lastName + "  " + firstName + " comes before " + o.lastName + "  " + o.firstName);
+			//	System.out.println(lastName + "  " + firstName + " comes before " + o.lastName + "  " + o.firstName);
 				return -1;
 			}
 
@@ -155,30 +204,134 @@ public class PhoneBook {
 		System.out.println(this);
 	}
 
-	public void search(String last, String first) {
+	public void search(String first, String last) {
 		myList.reset();
+		first = cutAsterisk(first);
+		last = cutAsterisk(last);
 
 		System.out.println("Search returns: ");
 
+		
 		for (int i = 0; i < myList.size(); i++) {
 			Entry next = myList.getNext();
+			
+			
+			
 			// first name matches
-			if (next.firstName.equals(first) || first.equals("*")) {
-
+			if (first.isEmpty() ||next.firstName.substring(0, first.length() -1).equals(first) ) {
+				
 				// last name matches
-				if (next.lastName.equals(last) || last.equals("*")) {
+				if (last.isEmpty() || next.lastName.substring(0, last.length() -1).equals(last) ) {
 					System.out.println(next);
+					continue;
 				}
 
 			}
+			
+//			
+//			Pattern pat = Pattern.compile(next.lastName.);
+//			Matcher lastMatch = pat.matcher(next.lastName);
+//			lastMatch.group();
+//			
+			
+			
+
+		}
+
+	}
+	
+	private static String cutAsterisk(String str){
+		if(str.contains("*")){
+			str = str.substring(0, str.indexOf('*'));
+		}
+		System.out.println("str was " + str);
+		return str;
+	}
+	
+
+	/**
+	 * 
+	 * @return gets three strings which reperesent one entry for the phone book
+	 */
+	public static String[] getCustomerInfo() {
+
+		while (true) {
+			String[] result = new String[3];
+			System.out.println("Enter first name");
+			result[1] = scan.next();
+
+			if (!checkAlphabetitcal(result[1])) {
+				System.out.println("Bad first name, try again");
+				continue;
+			}
+			System.out.println("Enter last name");
+			result[0] = scan.next();
+
+			if (!checkAlphabetitcal(result[0])) {
+				System.out.println("Bad last name, try again");
+				continue;
+			}
+
+			System.out.println("Enter phone number");
+			result[2] = scan.next();
+
+			if (!checkNumeric(result[2])) {
+				System.out.println("Bad phone number, try again");
+				continue;
+			}
+
+			return result;
 
 		}
 
 	}
 
-	// save to original file
-	public void quit() {
+	/**
+	 * 
+	 * @param str
+	 * @return Returns true if the string parameter is composed only of
+	 *         alphabetical characters, or else false
+	 */
+	private static boolean checkAlphabetitcal(String str) {
+		for (int i = 0; i < str.length(); i++) {
+			if (!Character.isAlphabetic(str.charAt(i))) {
+				return false;
+			}
 
+		}
+		return true;
+	}
+
+	/**
+	 * 
+	 * @param str
+	 * @return Returns true if the string parameter is composed only of numbers,
+	 *         or else false
+	 */
+	private static boolean checkNumeric(String str) {
+		for (int i = 0; i < str.length(); i++) {
+			if (!Character.isDigit(str.charAt(i))) {
+				return false;
+			}
+
+		}
+		return true;
+	}
+
+	public static String[] getSearchQuery() {
+		String[] result = new String[3];
+
+		
+			System.out.println("Enter first name, or * to search by all first names");
+			result[1] = scan.next();
+			scan.nextLine();
+
+			System.out.println("Enter last name, or * to search all last names");
+			result[0] = scan.next();
+			scan.nextLine();
+			
+		
+		return result;
 	}
 
 }
