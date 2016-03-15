@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class PhoneBook {
 
@@ -5,6 +9,29 @@ public class PhoneBook {
 
 	public PhoneBook(String fileName) {
 		myList = new ListDT<Entry>();
+
+		String line = null;
+		try {
+			// FileReader reads text files in the default encoding.
+			FileReader fileReader = new FileReader(fileName);
+
+			// Always wrap FileReader in BufferedReader.
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+			while ((line = bufferedReader.readLine()) != null) {
+				System.out.println(line);
+			}
+
+			// Always close files.
+			bufferedReader.close();
+		} catch (FileNotFoundException ex) {
+			System.out.println("Unable to open file '" + fileName + "'");
+		} catch (IOException ex) {
+			System.out.println("Error reading file '" + fileName + "'");
+			// Or we could just do this:
+			// ex.printStackTrace();
+		}
+
 	}
 
 	public String toString() {
@@ -41,7 +68,7 @@ public class PhoneBook {
 			if (lastName.compareTo(o.lastName) > 0) {
 				System.out.println(lastName + " comes after " + o.lastName);
 				return 1;
-			
+
 			} else if (lastName.compareTo(o.lastName) == 0) {
 				// if last names are the same, check the first name
 				System.out.println("last names are same");
@@ -52,7 +79,6 @@ public class PhoneBook {
 				return -1;
 			}
 
-			
 		}
 
 		public boolean equals(Object e) {

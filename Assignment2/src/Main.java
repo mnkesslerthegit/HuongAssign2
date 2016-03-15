@@ -10,7 +10,7 @@ public class Main {
 
 		while (true) {
 			System.out.print("Please enter file location for phone book");
-			String location = scan.next();
+			String location = scan.nextLine();
 			try {
 				book = new PhoneBook(location);
 			} catch (Exception e) {
@@ -139,8 +139,28 @@ public class Main {
 	}
 
 	private static String[] getSearchQuery() {
-		// TODO Auto-generated method stub
-		return null;
+		String[] result = new String[3];
+
+		while (true) {
+			System.out.println("Enter first name, or * to search by all first names");
+			result[1] = scan.next();
+			scan.nextLine();
+
+			if (!checkAlphabetitcal(result[1]) && !result[1].equals("*")) {
+				System.out.println("Bad first name, try again");
+				continue;
+			}
+			System.out.println("Enter last name, or * to search all last names");
+			result[0] = scan.next();
+			scan.nextLine();
+			if (!checkAlphabetitcal(result[0]) && !result[0].equals("*")) {
+				System.out.println("Bad last name, try again");
+				continue;
+			}
+
+			break;
+		}
+		return result;
 	}
 
 }
