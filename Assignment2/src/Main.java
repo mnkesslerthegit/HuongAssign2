@@ -21,38 +21,46 @@ public class Main {
 			break;
 		}
 
-		int choice = 5;
+		int choice = 0;
 
 		// main loop
 		do {
 
 			System.out.print("Enter a number to choose an option: " + "\n 1: Insert a new customer"
 					+ "\n 2: Delete an existing customer" + "\n 3: Print the phone book"
-					+ "\n 4: search for customers by first or last name" + "\n 5: Quit");
+					+ "\n 4: search for customers by first or last name" + "\n 5: Quit + \n");
 			try {
 				choice = scan.nextInt();
+				scan.nextLine();
 			} catch (Exception e) {
-				System.out.println("\n + Bad choice number; try again. + \n");
-				e.printStackTrace();
+				System.out.println("\n Bad choice number; try again. \n");
+				// e.printStackTrace();
+				scan.nextLine();
 				continue;
 			}
 
 			switch (choice) {
 			case 1:
 				String[] info = getCustomerInfo();
-				book.insert(info[0], info[1], info[2]);
+				if (book.insert(info[0], info[1], info[2])) {
+
+				} else {
+					System.out.println("Failed to insert: duplicate number");
+				}
 				break;
 			case 2:
 				info = getCustomerInfo();
-				book.delete(info[0],info[1], info[2]);
+				if (!book.delete(info[0], info[1], info[2])) {
+					System.out.println("Failed to remove anything");
+				}
 				break;
 			case 3:
 				book.print();
 				break;
-				
+
 			case 4:
 				String[] search = getSearchQuery();
-				book.search(search[0],search[1],search[2]);
+				book.search(search[0], search[1]);
 				break;
 
 			}
@@ -91,7 +99,7 @@ public class Main {
 				System.out.println("Bad phone number, try again");
 				continue;
 			}
-			
+
 			return result;
 
 		}

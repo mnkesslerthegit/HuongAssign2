@@ -10,43 +10,121 @@ public class ListDT<T extends Comparable<T>> implements ListInterface<T> {
 	public ListDT() {
 		head = new Node<T>(null);
 		last = head;
+
+		// set current to head
 		reset();
 
 	}
 
-	@Override
+	/**
+	 * Size is equal to the number of children the head has, + 1
+	 */
 	public int size() {
-		return head.getNumChildren();
+		int result = head.getNumChildren();
+		if (head.data != null) {
+			result++;
+		}
+		return result;
 	}
 
 	@Override
 	public void add(T element) {
-		last.add(new Node<T>(element));
-		last = last.next;
+
+		// handle the case where the list is empty
+
+		if (head.data == null) {
+
+			head.data = element;
+		} else {
+
+			reset();
+			int size = size();
+
+			// handle the case where the head can be swapped
+
+			if (head.data.compareTo(element) > 0) {
+				// create new node
+				Node<T> next = new Node<>(element);
+				// have it point at the head
+				next.next = head;
+				// it becomes the new head
+				head = next;
+				return;
+			}
+
+			// System.out.print("last is: " + last.data);
+
+			for (int i = 0; i < size; i++) {
+				// start at the second node
+				
+				int relation;
+
+				try {
+					relation = element.compareTo(current.next.data);
+				} catch (NullPointerException e) {
+					// again, if we hit null, it means we are at the end of the
+					// list
+
+					last.next = new Node<>(element);
+					last = last.next;
+					return;
+				}
+
+				if (relation > 0) {
+					getNext();
+					continue;
+				} else {
+					Node<T> next = new Node<>(element);
+
+					// set the new node to point to the node after the current
+					// one,
+					next.next = current.next;
+					// and set the current node to point to the new node
+					current.next = next;
+					if (next.next == null) {
+						last = next;
+					}
+					return;
+
+				}
+				
+			}
+
+		}
 
 	}
 
 	@Override
 	public boolean contains(T element) {
+		if (size() == 0) {
+			return false;
+		}
+
 		if (head.data.equals(element)) {
 			return true;
 		}
 
-		Node<T> temp = head;
-		while (temp != last) {
-			if (temp.data.equals(element)) {
+		int size = size();
+		reset();
+		for (int i = 0; i < size; i++) {
+			if (getNext().equals(element)) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
 	@Override
 	public boolean remove(T element) {
 
+		// only remove if we contain the given elemtent
+		if (!contains(element)) {
+			return false;
+		}
 		// first, handle the case where the only node is the head, or the list
 		// is empty
-		Node<T> temp = head;
+
 		if (head.next == null) {
 			if (head.data == null) {
 				return false;
@@ -57,13 +135,49 @@ public class ListDT<T extends Comparable<T>> implements ListInterface<T> {
 
 		}
 
-		// if the list contains more than one node, loop through the nodes until
-		// we find the second to last
-		while (temp.next != last) {
-			temp = temp.next;
+		// handle the case where we remove the head
+		if (head.data.equals(element)) {
+			head = head.next;
+			return true;
 		}
-		temp.next = null;
-		last = temp;
+
+		// if the list contains more than one node, loop through the nodes until
+		// we find the data
+		reset();
+		int size = size();
+
+		int location = 0;
+		for (int i = 0; i < size; i++) {
+			// stop here to make current equal to the node we want to find
+			if (getNext().equals(element)) {
+				location = i;
+				break;
+			}
+		}
+
+		reset();
+		for (int i = 0; i < location - 1; i++) {
+
+			// stop here to make current equal to the node before the node we
+			// want to find
+
+			getNext();
+		}
+
+		System.out.print("current is: " + current.data);
+		try {
+			// replace the node's child with its child's child
+			current.next = current.next.next;
+
+		} catch (NullPointerException e) {
+			// this just means the data we removed was the last
+			current.next = null;
+		}
+		// we should be on last node after the process is finished. Set last to
+		// current.
+		last = current;
+
+		System.out.print("this method finished");
 		return true;
 	}
 
