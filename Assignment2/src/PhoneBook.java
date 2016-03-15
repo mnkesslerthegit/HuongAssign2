@@ -43,27 +43,62 @@ public class PhoneBook {
 
 	}
 	
-	
-	//must be unique phone number
-	private void insert(){
+	/**
+	 * Checks if the phone book contains an entry 
+	 * @param e
+	 * @return
+	 */
+	private boolean containsNumber(String number){
+		myList.reset();
+		for(int i = 0; i < myList.size(); i++){
+			if(number.equals(myList.getNext().phoneNumber)){
+				return true;
+			}
+		}
 		
+		return false;
 		
 	}
 	
-	private void delete(){
+	
+	/**
+	 * Adds a new entry to the phonebook. the number must be unique. 
+	 * @param last the last name
+	 * @param first the first name
+	 * @param number the phone number
+	 */
+	public boolean insert(String last, String first, String number){
+		Entry ent = new Entry(last, first, number);
+		if(!containsNumber(number)){
+		myList.add(ent);
+		return true;
+		}
+		
+		return false; 
 		
 	}
 	
-	private void print(){
+	public void delete(String last, String first, String number){
+		Entry ent = new Entry(last, first, number);
+		myList.remove(ent);
+	}
+	
+	public void print(){
 		System.out.println(this);
 	}
 	
-	private void search(){
+	public void search(String last, String first, String number){
+		myList.reset();
+		for(int i = 0; i < myList.size(); i++){
+			
+			
+		}
+		
 		
 	}
 	
 	//save to original file
-	private void quit(){
+	public void quit(){
 		
 	}
 	
