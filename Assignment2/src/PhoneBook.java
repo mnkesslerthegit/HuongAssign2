@@ -218,16 +218,13 @@ public class PhoneBook {
 		for (int i = 0; i < myList.size(); i++) {
 			Entry next = myList.getNext();
 			
-			// first name matches
-			if (matches(first, next.firstName)) {
-
-				// last name matches
-				if (matches(last, next.lastName)) {
+		//first name and last name must match
+				if (matches(first, next.firstName) && matches(last, next.lastName)) {
 					System.out.println(next);
 					continue;
 				}
 
-			}			
+				
 
 		}
 
