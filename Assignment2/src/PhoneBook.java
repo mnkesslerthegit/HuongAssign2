@@ -207,6 +207,7 @@ public class PhoneBook {
 
 	/**
 	 * Searches by first an last name
+	 * 
 	 * @param first
 	 * @param last
 	 */
@@ -217,14 +218,12 @@ public class PhoneBook {
 
 		for (int i = 0; i < myList.size(); i++) {
 			Entry next = myList.getNext();
-			
-		//first name and last name must match
-				if (matches(first, next.firstName) && matches(last, next.lastName)) {
-					System.out.println(next);
-					continue;
-				}
 
-				
+			// first name and last name must match
+			if (matches(first, next.firstName) && matches(last, next.lastName)) {
+				System.out.println(next);
+				continue;
+			}
 
 		}
 
@@ -240,7 +239,7 @@ public class PhoneBook {
 	 * @return
 	 */
 	private boolean matches(String newName, String oldName) {
-		for (int i = 0; i < newName.length() && i < oldName.length() ; i++) {
+		for (int i = 0; i < newName.length() && i < oldName.length(); i++) {
 			if (newName.charAt(i) == '*') {
 				break;
 			} else {
