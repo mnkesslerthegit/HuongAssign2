@@ -32,8 +32,10 @@ public class PhoneBook {
 				String[] lineData = line.split(" ");
 
 				if (lineData.length == 3) {
+					//check if the line data is a valid entry
 					if (checkAlphabetitcal(lineData[0]) && checkAlphabetitcal(lineData[1])
 							&& checkNumeric(lineData[2])) {
+						//if it is, create an entry, and add it to the list. 
 						Entry nextEntry = new Entry(lineData[0], lineData[1], (lineData[2]));
 						myList.add(nextEntry);
 
