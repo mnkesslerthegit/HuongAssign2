@@ -57,8 +57,8 @@ public class PhoneBook {
 
 	// save to original file
 	public void quit() {
-System.out.print("quitting");
-		
+		System.out.print("quitting");
+
 		try {
 			// FileReader reads text files in the default encoding.
 			FileWriter fileWriter = new FileWriter(fileName);
@@ -70,7 +70,7 @@ System.out.print("quitting");
 			 * Write to textFile
 			 */
 			bufferedWriter.write(this.toString());
-			
+
 			// Always close files.
 			bufferedWriter.close();
 		} catch (FileNotFoundException ex) {
@@ -115,16 +115,17 @@ System.out.print("quitting");
 		public int compareTo(Entry o) {
 			// first check last name
 			if (lastName.compareTo(o.lastName) > 0) {
-				//System.out.println(lastName + " comes after " + o.lastName);
+				// System.out.println(lastName + " comes after " + o.lastName);
 				return 1;
 
 			} else if (lastName.compareTo(o.lastName) == 0) {
 				// if last names are the same, check the first name
-			//	System.out.println("last names are same");
+				// System.out.println("last names are same");
 				return firstName.compareTo(o.firstName);
 
 			} else {
-			//	System.out.println(lastName + "  " + firstName + " comes before " + o.lastName + "  " + o.firstName);
+				// System.out.println(lastName + " " + firstName + " comes
+				// before " + o.lastName + " " + o.firstName);
 				return -1;
 			}
 
@@ -204,50 +205,57 @@ System.out.print("quitting");
 		System.out.println(this);
 	}
 
+	/**
+	 * Searches by first an last name
+	 * @param first
+	 * @param last
+	 */
 	public void search(String first, String last) {
 		myList.reset();
-		first = cutAsterisk(first);
-		last = cutAsterisk(last);
 
 		System.out.println("Search returns: ");
 
-		
 		for (int i = 0; i < myList.size(); i++) {
 			Entry next = myList.getNext();
 			
-			
-			
 			// first name matches
-			if (first.isEmpty() ||next.firstName.substring(0, first.length() -1).equals(first) ) {
-				
+			if (matches(first, next.firstName)) {
+
 				// last name matches
-				if (last.isEmpty() || next.lastName.substring(0, last.length() -1).equals(last) ) {
+				if (matches(last, next.lastName)) {
 					System.out.println(next);
 					continue;
 				}
 
+			}			
+
+		}
+
+	}
+
+	/**
+	 * Checks for a mismatch between the characters of the first parameters
+	 * characters and the second parameters characters, until a * is reached in
+	 * the first parameter, or all characters have been checked.
+	 * 
+	 * @param newName
+	 * @param oldName
+	 * @return
+	 */
+	private boolean matches(String newName, String oldName) {
+		for (int i = 0; i < newName.length() && i < oldName.length() ; i++) {
+			if (newName.charAt(i) == '*') {
+				break;
+			} else {
+				if (newName.charAt(i) != oldName.charAt(i)) {
+					return false;
+				}
 			}
-			
-//			
-//			Pattern pat = Pattern.compile(next.lastName.);
-//			Matcher lastMatch = pat.matcher(next.lastName);
-//			lastMatch.group();
-//			
-			
-			
 
 		}
 
+		return true;
 	}
-	
-	private static String cutAsterisk(String str){
-		if(str.contains("*")){
-			str = str.substring(0, str.indexOf('*'));
-		}
-		System.out.println("str was " + str);
-		return str;
-	}
-	
 
 	/**
 	 * 
@@ -319,18 +327,16 @@ System.out.print("quitting");
 	}
 
 	public static String[] getSearchQuery() {
-		String[] result = new String[3];
+		String[] result = new String[2];
 
-		
-			System.out.println("Enter first name, or * to search by all first names");
-			result[1] = scan.next();
-			scan.nextLine();
+		System.out.println("Enter first name, or * to search by all first names");
+		result[0] = scan.next();
+		scan.nextLine();
 
-			System.out.println("Enter last name, or * to search all last names");
-			result[0] = scan.next();
-			scan.nextLine();
-			
-		
+		System.out.println("Enter last name, or * to search all last names");
+		result[1] = scan.next();
+		scan.nextLine();
+
 		return result;
 	}
 
