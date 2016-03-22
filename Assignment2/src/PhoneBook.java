@@ -264,15 +264,17 @@ public class PhoneBook implements PhoneBookInterface {
 
 		while (true) {
 			String[] result = new String[3];
+			
+			
 			System.out.println("Enter first name");
-			result[1] = scan.next();
+			result[1] = scan.nextLine();
 
 			if (!nameCheck(result[1])) {
 				System.out.println("Bad first name, try again");
 				continue;
 			}
 			System.out.println("Enter last name");
-			result[0] = scan.next();
+			result[0] = scan.nextLine();
 
 			if (!nameCheck(result[0])) {
 				System.out.println("Bad last name, try again");
@@ -280,7 +282,7 @@ public class PhoneBook implements PhoneBookInterface {
 			}
 
 			System.out.println("Enter phone number");
-			result[2] = scan.next();
+			result[2] = scan.nextLine();
 
 			if (!checkNumeric(result[2])) {
 
@@ -347,13 +349,16 @@ public class PhoneBook implements PhoneBookInterface {
 	 */
 	public static String[] getSearchQuery() {
 		String[] result = new String[2];
-
+		while(scan.hasNext()){
+			scan.nextLine();
+		}
+		
 		System.out.println("Enter first name, or * to search by all first names");
-		result[0] = scan.next();
+		result[0] = scan.nextLine();
 		scan.nextLine();
 
 		System.out.println("Enter last name, or * to search all last names");
-		result[1] = scan.next();
+		result[1] = scan.nextLine();
 		scan.nextLine();
 
 		return result;
