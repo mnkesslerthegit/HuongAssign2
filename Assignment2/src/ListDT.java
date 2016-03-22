@@ -164,7 +164,7 @@ public class ListDT<T extends Comparable<T>> implements ListInterface<T> {
 			getNext();
 		}
 
-		System.out.print("current is: " + current.data);
+	//	System.out.print("current is: " + current.data);
 		try {
 			// replace the node's child with its child's child
 			current.next = current.next.next;
@@ -177,7 +177,7 @@ public class ListDT<T extends Comparable<T>> implements ListInterface<T> {
 		// current.
 		last = current;
 
-		System.out.print("this method finished");
+	//	System.out.print("this method finished");
 		return true;
 	}
 

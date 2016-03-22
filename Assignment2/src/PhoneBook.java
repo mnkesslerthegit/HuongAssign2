@@ -266,14 +266,14 @@ public class PhoneBook {
 			System.out.println("Enter first name");
 			result[1] = scan.next();
 
-			if (!checkAlphabetitcal(result[1])) {
+			if (!nameCheck(result[1])) {
 				System.out.println("Bad first name, try again");
 				continue;
 			}
 			System.out.println("Enter last name");
 			result[0] = scan.next();
 
-			if (!checkAlphabetitcal(result[0])) {
+			if (!nameCheck(result[0])) {
 				System.out.println("Bad last name, try again");
 				continue;
 			}
@@ -290,6 +290,11 @@ public class PhoneBook {
 
 		}
 
+	}
+	
+	
+	private static boolean nameCheck(String name){
+		return checkAlphabetitcal(name) && name.length() < 21;
 	}
 
 	/**
@@ -324,6 +329,10 @@ public class PhoneBook {
 		return true;
 	}
 
+	/**
+	 * Gets a first name and last name to be used to search for entries
+	 * @return
+	 */
 	public static String[] getSearchQuery() {
 		String[] result = new String[2];
 
