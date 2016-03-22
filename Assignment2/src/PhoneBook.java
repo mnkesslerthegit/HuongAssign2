@@ -12,6 +12,12 @@ public class PhoneBook implements PhoneBookInterface {
 	private ListDT<Entry> myList;
 	private String fileName;
 
+	/**
+	 * Creates a phone book by reading data from a file,
+	 * 
+	 * @param file
+	 *            the path to the file
+	 */
 	public PhoneBook(String file) {
 		myList = new ListDT<Entry>();
 		fileName = file;
@@ -264,8 +270,7 @@ public class PhoneBook implements PhoneBookInterface {
 
 		while (true) {
 			String[] result = new String[3];
-			
-			
+
 			System.out.println("Enter first name");
 			result[1] = scan.nextLine();
 
@@ -349,10 +354,10 @@ public class PhoneBook implements PhoneBookInterface {
 	 */
 	public static String[] getSearchQuery() {
 		String[] result = new String[2];
-		while(scan.hasNext()){
+		while (scan.hasNext()) {
 			scan.nextLine();
 		}
-		
+
 		System.out.println("Enter first name, or * to search by all first names");
 		result[0] = scan.nextLine();
 		scan.nextLine();
@@ -363,9 +368,5 @@ public class PhoneBook implements PhoneBookInterface {
 
 		return result;
 	}
-
-
-
-	
 
 }
