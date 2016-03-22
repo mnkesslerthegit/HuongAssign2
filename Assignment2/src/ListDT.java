@@ -232,6 +232,7 @@ public class ListDT<T extends Comparable<T>> implements ListInterface<T> {
 		private Node<T> next;
 		private T data;
 
+		@SuppressWarnings("unused")
 		public void add(Node<T> nextNode) {
 			next = nextNode;
 		}

@@ -5,8 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class PhoneBook {
 
@@ -32,10 +30,10 @@ public class PhoneBook {
 				String[] lineData = line.split(" ");
 
 				if (lineData.length == 3) {
-					//check if the line data is a valid entry
+					// check if the line data is a valid entry
 					if (checkAlphabetitcal(lineData[0]) && checkAlphabetitcal(lineData[1])
 							&& checkNumeric(lineData[2])) {
-						//if it is, create an entry, and add it to the list. 
+						// if it is, create an entry, and add it to the list.
 						Entry nextEntry = new Entry(lineData[0], lineData[1], (lineData[2]));
 						myList.add(nextEntry);
 
@@ -85,6 +83,9 @@ public class PhoneBook {
 
 	}
 
+	/**
+	 * Print out the Phone book in the same format that it reads data from
+	 */
 	public String toString() {
 		String result = "";
 
@@ -282,18 +283,28 @@ public class PhoneBook {
 			result[2] = scan.next();
 
 			if (!checkNumeric(result[2])) {
+
 				System.out.println("Bad phone number, try again");
+
+				continue;
+			} else if (result[2].length() > 10) {
+				System.out.println("Bad phone number: too many numbers, try again");
 				continue;
 			}
-
 			return result;
 
 		}
 
 	}
-	
-	
-	private static boolean nameCheck(String name){
+
+	/**
+	 * Checks if a name is fit to be accepted into the phonebook (if it is
+	 * alphabetical, and less than 21 characters)
+	 * 
+	 * @param name
+	 * @return
+	 */
+	private static boolean nameCheck(String name) {
 		return checkAlphabetitcal(name) && name.length() < 21;
 	}
 
@@ -331,6 +342,7 @@ public class PhoneBook {
 
 	/**
 	 * Gets a first name and last name to be used to search for entries
+	 * 
 	 * @return
 	 */
 	public static String[] getSearchQuery() {
