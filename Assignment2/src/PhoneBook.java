@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class PhoneBook {
+public class PhoneBook implements PhoneBookInterface {
 
 	private static Scanner scan = new Scanner(System.in);
 	private ListDT<Entry> myList;
@@ -358,5 +358,9 @@ public class PhoneBook {
 
 		return result;
 	}
+
+
+
+	
 
 }
