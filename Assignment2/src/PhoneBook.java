@@ -354,17 +354,12 @@ public class PhoneBook implements PhoneBookInterface {
 	 */
 	public static String[] getSearchQuery() {
 		String[] result = new String[2];
-		while (scan.hasNext()) {
-			scan.nextLine();
-		}
 
 		System.out.println("Enter first name, or * to search by all first names");
 		result[0] = scan.nextLine();
-		scan.nextLine();
 
 		System.out.println("Enter last name, or * to search all last names");
 		result[1] = scan.nextLine();
-		scan.nextLine();
 
 		return result;
 	}
